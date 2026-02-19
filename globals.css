@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #D4AF37;
+  --gold-dim: #9a7d1e;
+  --bg: #030303;
+  --surface: rgba(15, 15, 15, 0.8);
+  --border: rgba(255, 255, 255, 0.05);
+  --ticker-h: 34px;
+  --disclaimer-h: 40px;
+}
+
+/* Base reset */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 175, 55, 0.2) transparent;
+}
+
+body {
+  padding-top: var(--ticker-h);
+  padding-bottom: var(--disclaimer-h);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 2px;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+/* Scanline effect */
+.scanline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* CRT flicker */
+@keyframes crt-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.95; }
+  94% { opacity: 1; }
+}
+
+.crt {
+  animation: crt-flicker 8s infinite;
+}
+
+/* Gold glow */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15), 0 0 60px rgba(212, 175, 55, 0.05);
+}
+
+/* Text gold */
+.text-gold {
+  color: var(--gold);
+}
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '▊';
+  animation: blink 1s infinite;
+  color: var(--gold);
+}
+
+/* Page transition */
+.page-enter {
+  animation: terminalIn 0.4s ease-out forwards;
+}
+
+@keyframes terminalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Impact card border variants */
+.impact-high {
+  border-left-color: #ef4444;
+}
+.impact-mid {
+  border-left-color: #f97316;
+}
+.impact-low {
+  border-left-color: #eab308;
+}
+
+/* Markdown prose styling */
+.markdown-body {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  color: white;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.markdown-body h2 {
+  font-size: 0.75rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 0.25rem;
+  color: var(--gold);
+}
+.markdown-body h3 {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.markdown-body strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+.markdown-body ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+.markdown-body ul li::before {
+  content: '▸ ';
+  color: var(--gold);
+  font-size: 0.6rem;
+}
+.markdown-body code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  color: var(--gold);
+}
+.markdown-body hr {
+  border-color: rgba(255, 255, 255, 0.05);
+  margin: 1rem 0;
+}
