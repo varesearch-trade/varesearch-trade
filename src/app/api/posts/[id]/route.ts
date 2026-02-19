@@ -12,9 +12,10 @@ const updatePostSchema = z.object({
   published: z.boolean().optional(),
 })
 
+// In Next.js 15, params is a Promise that must be awaited
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } // Define params as a Promise
 ) {
   const session = await auth()
   if (!session || session.user.role !== 'admin') {
@@ -22,7 +23,8 @@ export async function DELETE(
   }
 
   try {
-    await db.delete(posts).where(eq(posts.id, params.id))
+    const { id } = await params // Explicitly await the params
+    await db.delete(posts).where(eq(posts.id, id))
     return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete' }, { status: 500 })
@@ -31,7 +33,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } // Define params as a Promise
 ) {
   const session = await auth()
   if (!session || session.user.role !== 'admin') {
@@ -39,12 +41,14 @@ export async function PATCH(
   }
 
   try {
+    const { id } = await params // Explicitly await the params
     const body = await req.json()
     const validated = updatePostSchema.parse(body)
+    
     const [updated] = await db
       .update(posts)
       .set({ ...validated, updatedAt: new Date() })
-      .where(eq(posts.id, params.id))
+      .where(eq(posts.id, id))
       .returning()
 
     return NextResponse.json({ post: updated })
