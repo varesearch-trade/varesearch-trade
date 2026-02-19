@@ -1,4 +1,4 @@
-// Force the standard Node.js runtime for bcryptjs compatibility
+//
 export const runtime = 'nodejs'; 
 
 import NextAuth from 'next-auth'
